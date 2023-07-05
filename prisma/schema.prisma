@@ -64,7 +64,7 @@ model Product {
   category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name       String
   price      Decimal
-  sale       Decimal     @default(0)
+  sale       Int     
   isFeatured Boolean     @default(false)
   isArchived Boolean     @default(false)
   benefitId  String // Foreign Key to Benefit
