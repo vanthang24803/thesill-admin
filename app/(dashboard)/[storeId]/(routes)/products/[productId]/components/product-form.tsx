@@ -46,7 +46,7 @@ const formSchema = z.object({
   name: z.string().min(1),
   images: z.object({ url: z.string() }).array(),
   price: z.coerce.number().min(1),
-  sale: z.coerce.number().min(0),
+  sale: z.coerce.number().min(0).max(100),
   categoryId: z.string().min(1),
   lightId: z.string().min(1),
   benefitId: z.string().min(1),
