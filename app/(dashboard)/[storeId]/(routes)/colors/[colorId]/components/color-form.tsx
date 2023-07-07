@@ -26,7 +26,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 
 const formSchema = z.object({
   name: z.string().min(2),
-  value: z.string().min(4).max(6).regex(/^#/, {
+  value: z.string().min(4).max(9).regex(/^#/, {
     message: "String must be a valid hex code",
   }),
 });
