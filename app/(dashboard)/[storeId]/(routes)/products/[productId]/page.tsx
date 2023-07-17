@@ -28,6 +28,12 @@ const ProductPage = async ({
     },
   });
 
+  const finds = await prismadb.find.findMany({
+    where: {
+      storeId: params.storeId,
+    },
+  });
+
   const lights = await prismadb.light.findMany({
     where: {
       storeId: params.storeId,
@@ -51,6 +57,7 @@ const ProductPage = async ({
       <div className="flex-1 space-y-4 p-8 pt-6">
         <ProductForm
           categories={categories}
+          finds={finds}
           benefits={benefits}
           lights={lights}
           colors={colors}

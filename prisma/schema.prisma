@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -15,6 +15,7 @@ model Store {
   id         String      @id @default(uuid())
   name       String
   userId     String
+  finds      Find[]      @relation("StoreToFind")
   billboards Billboard[] @relation("StoreToBillboard")
   categories Category[]  @relation("StoreToCategory")
   products   Product[]   @relation("StoreToProduct")
@@ -64,9 +65,11 @@ model Product {
   category   Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name       String
   price      Decimal
-  sale       Int     
+  sale       Int
   isFeatured Boolean     @default(false)
   isArchived Boolean     @default(false)
+  findId     String // Foreign Key to Benefit
+  find       Find        @relation(fields: [findId], references: [id])
   benefitId  String // Foreign Key to Benefit
   benefit    Benefit     @relation(fields: [benefitId], references: [id])
   lightId    String // Foreign Key to Light
@@ -81,6 +84,7 @@ model Product {
   updatedAt  DateTime    @updatedAt
 
   @@index([storeId])
+  @@index([findId])
   @@index([categoryId])
   @@index([benefitId])
   @@index([lightId])
@@ -88,16 +92,17 @@ model Product {
   @@index([colorId])
 }
 
-model Account {
-  id        String   @id @default(uuid())
+model Find {
+  id        String    @id @default(uuid())
+  storeId   String // Foreign Key to Store
+  store     Store     @relation("StoreToFind", fields: [storeId], references: [id])
   name      String
-  password  String   @default("password")
-  email     String   @default("")
-  // orders    Order[]  @relation("AccountToOrder")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+  products  Product[] // Relation to Product model
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
+  @@index([storeId])
+}
 model Benefit {
   id        String    @id @default(uuid())
   storeId   String // Foreign Key to Store
@@ -150,7 +155,6 @@ model Color {
   @@index([storeId])
 }
 
-
 // Intermediary for a many-to-many relationship
 model OrderItem {
   id        String  @id @default(uuid())
@@ -176,7 +180,7 @@ model Image {
 
 model Order {
   id         String      @id @default(uuid())
-  storeId    String     // Foreign Key to Store
+  storeId    String // Foreign Key to Store
   store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems OrderItem[] // Relation to OrderItem model
   // accountId  String       // Foreign Key to Account
@@ -186,7 +190,7 @@ model Order {
   address    String      @default("")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
+  // @@index([accountId])
 
   @@index([storeId])
-  // @@index([accountId])
 }

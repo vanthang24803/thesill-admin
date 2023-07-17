@@ -17,6 +17,7 @@ export async function POST(
       price,
       sale,
       categoryId,
+      findId,
       benefitId,
       lightId,
       colorId,
@@ -49,6 +50,11 @@ export async function POST(
     if (!categoryId) {
       return new NextResponse("Category id is required", { status: 400 });
     }
+
+    if (!findId) {
+      return new NextResponse("Find is required", { status: 400 });
+    }
+
 
     if(!benefitId) {
         return new NextResponse("Benefit is required", { status: 400 });
@@ -89,6 +95,7 @@ export async function POST(
         isFeatured,
         isArchived,
         categoryId,
+        findId,
         benefitId,
         lightId,
         colorId,
@@ -116,6 +123,7 @@ export async function GET(
   try {
     const { searchParams } = new URL(req.url);
     const categoryId = searchParams.get("categoryId") || undefined;
+    const findId = searchParams.get("findId") || undefined;
     const benefitId = searchParams.get("benefitId") ||undefined;
     const lightId = searchParams.get("lightId") || undefined;
     const colorId = searchParams.get("colorId") || undefined;
@@ -130,6 +138,7 @@ export async function GET(
       where: {
         storeId: params.storeId,
         categoryId,
+        findId,
         benefitId,
         lightId,
         colorId,
@@ -140,6 +149,7 @@ export async function GET(
       include: {
         images: true,
         category: true,
+        find : true,
         benefit : true,
         light: true,
         color: true,

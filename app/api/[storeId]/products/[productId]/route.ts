@@ -19,6 +19,7 @@ export async function GET(
       include: {
         images: true,
         category: true,
+        find : true,
         benefit : true,
         light : true,
         size: true,
@@ -86,6 +87,7 @@ export async function PATCH(
       price,
       sale,
       categoryId,
+      findId,
       images,
       benefitId,
       lightId,
@@ -121,6 +123,10 @@ export async function PATCH(
 
     if (!categoryId) {
       return new NextResponse("Category id is required", { status: 400 });
+    }
+
+    if (!findId) {
+      return new NextResponse("Find is required", { status: 400 });
     }
 
     if(!benefitId) {
@@ -159,6 +165,7 @@ export async function PATCH(
         price,
         sale,
         categoryId,
+        findId,
         benefitId,
         lightId,
         colorId,

@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
 import {
+  Find,
   Benefit,
   Category,
   Color,
@@ -48,6 +49,7 @@ const formSchema = z.object({
   price: z.coerce.number().min(1),
   sale: z.coerce.number().min(0).max(100),
   categoryId: z.string().min(1),
+  findId: z.string().min(1),
   lightId: z.string().min(1),
   benefitId: z.string().min(1),
   colorId: z.string().min(1),
@@ -65,6 +67,7 @@ interface ProductFormProps {
       })
     | null;
   categories: Category[];
+  finds : Find[],
   benefits: Benefit[];
   lights: Light[];
   colors: Color[];
@@ -75,6 +78,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   initialData,
   categories,
   benefits,
+  finds,
   lights,
   sizes,
   colors,
@@ -104,6 +108,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         categoryId: "",
         lightId : "",
         benefitId: "",
+        findId : "",
         colorId: "",
         sizeId: "",
         isFeatured: false,
@@ -289,6 +294,40 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="findId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Find</FormLabel>
+                  <Select
+                    disabled={loading}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder="Select a find"
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {finds.map((find) => (
+                        <SelectItem key={find.id} value={find.id}>
+                          {find.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="sizeId"
