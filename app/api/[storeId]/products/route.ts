@@ -122,9 +122,10 @@ export async function GET(
 ) {
   try {
     const { searchParams } = new URL(req.url);
+    const name = searchParams.get("name") || undefined;
     const categoryId = searchParams.get("categoryId") || undefined;
     const findId = searchParams.get("findId") || undefined;
-    const benefitId = searchParams.get("benefitId") ||undefined;
+    const benefitId = searchParams.get("benefitId") || undefined;
     const lightId = searchParams.get("lightId") || undefined;
     const colorId = searchParams.get("colorId") || undefined;
     const sizeId = searchParams.get("sizeId") || undefined;
@@ -137,6 +138,7 @@ export async function GET(
     const products = await prismadb.product.findMany({
       where: {
         storeId: params.storeId,
+        name: name ? { contains: name} : undefined,
         categoryId,
         findId,
         benefitId,
@@ -149,8 +151,8 @@ export async function GET(
       include: {
         images: true,
         category: true,
-        find : true,
-        benefit : true,
+        find: true,
+        benefit: true,
         light: true,
         color: true,
         size: true,
@@ -166,3 +168,4 @@ export async function GET(
     return new NextResponse("Internal error", { status: 500 });
   }
 }
+
