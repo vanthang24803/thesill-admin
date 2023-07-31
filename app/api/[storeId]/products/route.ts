@@ -121,6 +121,7 @@ export async function GET(
   { params }: { params: { storeId: string } }
 ) {
   try {
+    // Cor 
     const { searchParams } = new URL(req.url);
     const name = searchParams.get("name") || undefined;
     const categoryId = searchParams.get("categoryId") || undefined;
